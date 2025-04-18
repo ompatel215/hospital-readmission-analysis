@@ -1,4 +1,6 @@
 import pandas as pd
+import matplotlib.pyplot as plt
+
 
 # Load the hospital dataset from the 'data/' folder
 df = pd.read_csv("data/diabetic_data.csv")
@@ -36,3 +38,22 @@ print("First dew rows:\n", df.head())
 
 # 7. Save cleaned data for next steps (e.g. SQL or Tableau)
 df.to_csv("output/cleaned_data.csv", index = False)
+
+#Check unique values in readmission column
+print(df["was_readmitted"].value_counts())
+
+# Percentage of readmitted vs not
+print(df["was_readmitted"].value_counts(normalize=True) * 100)
+
+# Count readmissions by age
+readmit_by_age = df[df["was_readmitted"] != "NO"].groupby("age")["was_readmitted"].count()
+
+# Visualize it
+readmit_by_age.plot(kind="bar", title="Readmissions by Age Group", figsize=(10,4))
+
+
+# Show the plot explicitly (optional but helpful)
+plt.ylabel("Number of Readmissions")
+plt.xlabel("Age Group")
+plt.tight_layout()
+plt.show()
